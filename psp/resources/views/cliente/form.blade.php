@@ -14,14 +14,13 @@
 <div class="mb-3">
     <label for="city" class="form-label">Pais</label>
     <input type="text" name="country" id="country" class="form-control" value="{{isset($cliente->country)?$cliente->country:''}}">
-    <!-- <input type="select" name="city" id="city" class="form-select"> -->
-    <!-- <select class="mb-3" id="city" name="city" class="form-select w-100" class="form-contol" aria-label="Default select example ">
-                        <option class="mb-3" selected>Seleccione una ciudad</option>
-                        <option value="1">One</option>
-                        <option value="2">Two</option>
-                        <option value="3">Three</option>
-                    </select> -->
+    
 </div>
+<div class="mb-3">
+    <label for="photo" class="form-label">Ingrese una foto</label>
+    <input type="file" name="photo" id="photo" class="form-contol" value="{{isset($cliente->photo)?$cliente->photo:''}}">
+</div>
+
 <!-- <div class="mb-3">
     <label for="accept_terms" class="form-check-label">Aceptar téminos y condiciones</label>
     <div class="form-check">

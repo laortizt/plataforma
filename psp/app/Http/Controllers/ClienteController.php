@@ -4,6 +4,7 @@ namespace App\Http\Controllers;
 
 use App\Cliente;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Storage;
 
 class ClienteController extends Controller
 {
@@ -24,7 +25,9 @@ class ClienteController extends Controller
      * @return \Illuminate\Http\Response
      */
     public function create()
-    {
+    {    
+        // $cliente=Cliente::all();
+        // // $data=array("cliente"=>$cliente);
         return view('cliente.create');
     }
 
@@ -35,11 +38,28 @@ class ClienteController extends Controller
      * @return \Illuminate\Http\Response
      */
     public function store(Request $request)
-    {
+    {    
+        //validar los formularios
+        $campos=[
+            'name'=>'required|strig|max:50',
+            'email'=>'required|strig|max:100',
+            'country'=>'required|string|max:50',
+            'photo'=>'required|string|max:500|mimes:jpg,jpeg,png',
+        ];
+        $this->valide($request, $campos);
+
         $datoscliente=request()->except('_token');
+
+        // ver si la foto está llegando
+        if($request->hasFile('photo')){
+            $datoscliente['photo']=$request->file('photo')->store('uploads', 'public');
+        }
         Cliente::insert($datoscliente);
         // return response()->json($datoscliente);
         return redirect('cliente')->with('msn','Cliente registrado exitosamente');
+
+
+
     }
 
     /**
@@ -72,9 +92,17 @@ class ClienteController extends Controller
      * @param  \App\Cliente  $cliente
      * @return \Illuminate\Http\Response
      */
-    public function update(Request $request, $id)
+    public function update(Request $request,$id)
     {
         $datoscliente=request()->except('_token','_method');
+
+        if($request->hasFile('photo')){
+            $cliente=Cliente::findOrFail($id);
+            Storage::delete('public/'.$cliente->photo);
+            $datoscliente['photo']=$request->file('photo')->store('uploads', 'public');
+            // $request->file('photo')->storeAs('public/uploads', $datoscliente['photo']);
+        }
+
         Cliente::where('id','=',$id)->update($datoscliente);
         return redirect('cliente')->with('msn','Cliente actualizado exitosamente');
     }
@@ -87,7 +115,11 @@ class ClienteController extends Controller
      */
     public function destroy($id)
     {
-        Cliente::destroy($id);
+        $cliente=Cliente::findOrFail($id);
+        
+        if(Storage::delete('public/'.$cliente->photo)){
+            Cliente::destroy($id);
+        }
         return redirect('cliente')->with('msn','Cliente eliminado exitosamente');
     }
 }

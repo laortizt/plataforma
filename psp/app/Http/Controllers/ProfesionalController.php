@@ -4,6 +4,7 @@ namespace App\Http\Controllers;
 
 use App\Profesional;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Storage;
 
 class ProfesionalController extends Controller
 {
@@ -35,10 +36,26 @@ class ProfesionalController extends Controller
      * @return \Illuminate\Http\Response
      */
     public function store(Request $request)
-    {
+    {   
+        //validar los formularios
+        $campos=[
+            'name'=>'required|strig|max:50',
+            'email'=>'required|strig|max:100',
+            'telephone'=>'required|string|max:50',
+            'country'=>'required|string|max:50',
+            'photo'=>'required|numeric',
+        ];
+        $this->validate($request, $campos);
+
         // $datosprofesional=request()->all();
         $datosprofesional=request()->except('_token');
-        Profesional::insert($datosprofesional);
+
+        // ver si la foto está llegando
+        if($request->hasFile('photo')){
+            $datosprofesional['photo']=$request->file('photo')->store('uploads', 'public');
+        }
+
+        Profesional::insert($datosprofesional); 
         // return response()->json($datosprofesional);
         return redirect('profesional')->with('msn','Profesional registrado exitosamente');
 
@@ -76,8 +93,13 @@ class ProfesionalController extends Controller
      */
     public function update(Request $request, $id)
     {
-        // si el id del formulrio es igual al id de la base de datos actualizar
-        $datosprofesional=request()->except('_token','_method');
+        $datoscliente=request()->except('_token','_method');
+
+        if($request->hasFile('photo')){
+            $profesional=Profesional::findOrFail($id);
+            Storage::delete('public/'.$profesional->photo);
+            $datosprofesional['photo']=$request->file('photo')->store('uploads','public');
+        }
         Profesional::where('id','=',$id)->update($datosprofesional);
         return redirect('profesional')->with('msn','Cliente actualizado exitosamente');
     }

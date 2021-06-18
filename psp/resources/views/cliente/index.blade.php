@@ -23,10 +23,10 @@
         <thead>
             <tr>
                 <th scope="col">Id</th>
+                <th scope="col">Foto</th>
                 <th scope="col">Nombre</th>
                 <th scope="col">Correo</th>
                 <th scope="col">Pais</th>
-
                 <th scope="col">Acciones</th>
             </tr>
         </thead>
@@ -34,7 +34,7 @@
             @foreach($clientes as $p)
             <tr>
                 <th scope="row">{{$p->id}}</th>
-               
+                <td><img src="{{asset('storage').'/'.$p->photo}}" width="80px"class="img-fluid rounded-circle border border-5 border-light"></td>
                 <td>{{$p->name}}</td>
                 <td>{{$p->email}}</td>
                 <td>{{$p->country}}</td>

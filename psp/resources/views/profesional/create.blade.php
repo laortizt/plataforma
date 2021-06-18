@@ -8,7 +8,7 @@
     <div class="card" style="width: 15rem; margin: 20px auto;">
         <!-- <img src="..." class="card-img-top" alt="..."> -->
         <div class="card-body">
-            <form action="{{url('/profesional')}}" method="post">
+            <form action="{{url('/profesional')}}" method="post" enctype="multipart/form-data">
                 <!-- se incluye la vista del formulario  -->
                 @csrf
                 @include('profesional.form')

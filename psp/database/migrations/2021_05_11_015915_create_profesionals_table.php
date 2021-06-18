@@ -17,7 +17,7 @@ class CreateProfesionalsTable extends Migration
             $table->increments('id');
             $table->string('name','50');
             $table->string('email','100')->unique();
-            $table->timestamp('email_verified_at','6')->nullable();
+            // $table->string('email_verified_at')->nullable();
             $table->string('password','100');
             $table->string('telephone','10');
             $table->string('country','20');

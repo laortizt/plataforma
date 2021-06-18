@@ -3,7 +3,7 @@
 @section('content')
 
 <div class="container-fluid">
-    <h1>Listado Pofesionales</h1>
+    <h1>Listado Profesionales</h1>
 
    
 
@@ -23,6 +23,7 @@
         <thead>
             <tr>
                 <th scope="col">Id</th>
+                <th scope="col">Foto</th>
                 <th scope="col">Nombre</th>
                 <th scope="col">Correo</th>
                 <th scope="col">Telefono</th>
@@ -35,7 +36,7 @@
             @foreach($profesionals as $p)
             <tr>
                 <th scope="row">{{$p->id}}</th>
-               
+                <td><img src="{{asset('storage').'/'.$p->photo}}" width="80px" class="img-fluid  rounded-circle border border-5 border-light"></td>
                 <td>{{$p->name}}</td>
                 <td>{{$p->email}}</td>
                 <td>{{$p->telephone}}</td>
